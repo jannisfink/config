@@ -1,0 +1,13 @@
+### PHPStorm ###
+/.idea
+
+### Composer ###
+/vendor/
+composer.phar
+composer.lock
+
+### PHPUnit ###
+phpunit.phar
+
+### Clover ###
+/build
