@@ -16,14 +16,49 @@
 namespace Fink\config;
 
 
-interface Configuration {
+/**
+ * Class Configuration
+ *
+ * Read a configuration from a file.
+ *
+ * @package Fink\config
+ */
+class Configuration {
 
   /**
-   *
-   *
-   * @param array ...$path
-   * @return mixed
+   * Constant to indicate an intelligent guess between all possible configuration formats
    */
-  public function get(...$path);
+  const AUTO = 0;
+
+  /**
+   * Constant to indicate a configuration stored in ini-format
+   */
+  const INI = 11;
+
+  /**
+   * Constant to indicate a configuration stored in json-format
+   */
+  const JSON = 22;
+
+  /**
+   * Create a new configuration instance.
+   *
+   * @param string $file the filename of the configuration file as an absolute path.
+   * @param int $format format of the configuration file. Intelligent guess, if not given.
+   */
+  public function __construct($file, $format = Configuration::AUTO) {
+
+  }
+
+  /**
+   * Read a specific key from the configuration. It will return all configuration values
+   * with the type they are stored in the configuration file (int, bool, string...)
+   *
+   * @param array ...$path the key or keys matching a specific configuration value
+   * @return mixed the value of the key given.
+   */
+  public function get(...$path) {
+
+  }
 
 }
