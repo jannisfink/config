@@ -18,7 +18,7 @@ namespace Fink\config\loader;
 
 use Fink\config\exc\ParseException;
 
-class IniConfigurationLoader extends ConfigurationLoader {
+class IniConfigurationLoader extends BaseConfigurationLoader {
 
   public static $supportedFileTypes = ["ini"];
 
