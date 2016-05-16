@@ -1,6 +1,6 @@
 {
   "name": "fink/config",
-  "description": "A configuration library",
+  "description": "A simple yet powerful configuration library for PHP",
   "license": "Apache-2.0",
   "authors": [
     {
