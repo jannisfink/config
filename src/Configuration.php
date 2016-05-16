@@ -15,6 +15,10 @@
 
 namespace Fink\config;
 
+use Fink\config\loader\AutoConfigurationLoader;
+use Fink\config\loader\IniConfigurationLoader;
+use Fink\config\loader\JsonConfigurationLoader;
+
 
 /**
  * Class Configuration
@@ -40,14 +44,24 @@ class Configuration {
    */
   const JSON = 22;
 
+  private $filename;
+
+  private $format;
+
+  private $configurationLoaded;
+
+  private $configuration;
+
   /**
    * Create a new configuration instance.
    *
-   * @param string $file the filename of the configuration file as an absolute path.
+   * @param string $filename the filename of the configuration file as an absolute path.
    * @param int $format format of the configuration file. Intelligent guess, if not given.
    */
-  public function __construct($file, $format = Configuration::AUTO) {
-
+  public function __construct($filename, $format = Configuration::AUTO) {
+    $this->filename = $filename;
+    $this->format = $format;
+    $this->configurationLoaded = false;
   }
 
   /**
@@ -56,9 +70,43 @@ class Configuration {
    *
    * @param array ...$path the key or keys matching a specific configuration value
    * @return mixed the value of the key given.
+   *
+   * @throws \Exception if the configuration key asked for could not be found
    */
   public function get(...$path) {
+    if (!$this->configurationLoaded) {
+      $this->loadConfiguration();
+    }
 
+    $configuration = $this->configuration;
+    foreach ($path as $key) {
+      if (!array_key_exists($key, $configuration)) {
+        throw new \Exception($key . ' is not present in the configuration');
+      }
+      $configuration = $configuration[$key];
+    }
+    return $configuration;
+  }
+
+  private function loadConfiguration() {
+    $loader = null;
+    switch ($this->format) {
+      case self::INI:
+        $loader = new IniConfigurationLoader($this->filename);
+        break;
+
+      case self::JSON:
+        $loader = new JsonConfigurationLoader($this->filename);
+        break;
+
+      case self::AUTO:
+      default:
+        $loader = new AutoConfigurationLoader($this->filename);
+        break;
+    }
+
+    $this->configuration = $loader->parseFile();
+    $this->configurationLoaded = true;
   }
 
 }
