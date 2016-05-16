@@ -1,6 +1,16 @@
 {
   "name": "fink/config",
   "description": "A simple yet powerful configuration library for PHP",
+  "type": "library",
+  "keywords": [
+    "config",
+    "configuration"
+  ],
+
+  "support": {
+    "issues": "https://github.com/jannisfink/config/issues"
+  },
+
   "license": "Apache-2.0",
   "authors": [
     {
