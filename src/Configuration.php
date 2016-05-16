@@ -144,6 +144,7 @@ class Configuration {
     }
 
     self::$configurationLoaders[$id] = $loader;
+    ksort(self::$configurationLoaders);
   }
 
 }

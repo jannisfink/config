@@ -53,7 +53,7 @@ config.json
 }
 ```
 
-Use it as following
+Use it as the following
 ```php
 use \Fink\config\Configuration;
 
@@ -64,3 +64,19 @@ $iniConfig = new Configuration("config.ini");
 echo $jsonConfig->get("section", "key"); // echoes "value"
 echo $iniConfig->get("section", "key");  // echoes "value", too
 ```
+
+### Use custom configuration loaders
+
+To create a new (custom) configuration loader, just create a new subclass of `\Fink\config\loader\BaseConfigurationLoader` and implement the methods needed. Be sure to override the static class member `$supportedFileTypes` as a hint for supported configuration file types.
+
+Add the new configuration loader to the list of supported loaders:
+
+```php
+use \Fink\config\Configuration;
+
+Configuration::addConfigurationLoader(42, YourCustomConfigurationLoader::class);
+
+$config = new Configuration("your-custom-configuration-syntax.type", 42);
+```
+
+ Autodetect the correct loader will work for the custom one, too. If your custom loader supports a file type already supported by a predefined one, the loader with the smallest id will handle the configuration file.
