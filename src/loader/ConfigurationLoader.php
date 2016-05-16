@@ -27,39 +27,51 @@ use Fink\config\exc\ParseException;
  */
 abstract class ConfigurationLoader {
 
+  private $filename;
+
+  /**
+   * An array of all supported file types
+   */
+  const SUPPORTED_FILE_TYPES = [];
+
   /**
    * ConfigurationLoader constructor.
    *
-   * Allow no instances of this class
+   * Create a new loader for a given file.
+   *
+   * @param $filename string the file name
    */
-  private final function __construct() {
-    // empty on purpose
+  public final function __construct($filename) {
+    $this->filename = $filename;
   }
 
-  /**
-   * Returns an array of supported configuration formats, e.g. ['yaml', 'yml']
-   *
-   * @return array supported file formats
-   */
-  public abstract static function getSupportedFileTypes();
+  public function getFilename() {
+    return $this->filename;
+  }
 
   /**
    * Checks, if a given file can be parsed by this configuration loader. If the file type is supported
    * by this loader, this function will return true without further checking for correct syntax of the
-   * configuration file. If not, this function will try to parse the file formats to test whether they can be
-   * parsed or not.
+   * configuration file.
    *
-   * @param string $filename absolute path to a configuration file
+   * If the deep parameter is set to true, this function will try to parse the file formats to test
+   * whether they can be parsed or not.
+   *
+   * @param $deep bool if set to true, this function will just look for the file extension
    * @return bool true, if the given file can be parsed by this loader, false else
    */
-  public final static function checkFile($filename) {
-    $fileExtension = pathinfo($filename, PATHINFO_EXTENSION);
-    if (in_array($fileExtension, static::getSupportedFileTypes())) {
+  public final function checkFile($deep = false) {
+    $fileExtension = pathinfo($this->filename, PATHINFO_EXTENSION);
+    if (in_array($fileExtension, static::SUPPORTED_FILE_TYPES)) {
       return true;
     }
 
+    if (!$deep) {
+      return false;
+    }
+
     try {
-      static::parseFile($filename);
+      $this->parseFile();
       return true;
     } catch (ParseException $e) {
       return false;
@@ -72,11 +84,10 @@ abstract class ConfigurationLoader {
    *
    * This function may cache the parsing result for better performance
    *
-   * @param string $filename absolute path to a configuration file
    * @return array an associative array containing the configuration as key -> value pairs.
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public abstract static function parseFile($filename);
+  public abstract function parseFile();
 
 }

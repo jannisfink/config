@@ -24,19 +24,20 @@ class IniConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   const INVALID_INI = __DIR__ . "/invalid_ini.ini";
 
   public function testGetSupportedFileTypes() {
-    $this->assertEquals(["ini"], IniConfigurationLoader::getSupportedFileTypes());
+    $this->assertEquals(["ini"], IniConfigurationLoader::SUPPORTED_FILE_TYPES);
   }
 
   public function testParseFileValidIni() {
-    $parsed = IniConfigurationLoader::parseFile(self::VALID_INI);
+    $loader = new IniConfigurationLoader(self::VALID_INI);
 
-    $this->assertEquals(["section" => ["key" => "value"]], $parsed);
+    $this->assertEquals(["section" => ["key" => "value"]], $loader->parseFile());
   }
 
   public function testParseFileInvalidIni() {
     $this->setExpectedException(ParseException::class);
 
-    IniConfigurationLoader::parseFile(self::INVALID_INI);
+    $loader = new IniConfigurationLoader(self::INVALID_INI);
+    $loader->parseFile();
   }
 
 }

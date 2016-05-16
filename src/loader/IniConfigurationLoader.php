@@ -20,14 +20,7 @@ use Fink\config\exc\ParseException;
 
 class IniConfigurationLoader extends ConfigurationLoader {
 
-  /**
-   * Returns an array of supported configuration formats, e.g. ['yaml', 'yml']
-   *
-   * @return array supported file formats
-   */
-  public static function getSupportedFileTypes() {
-    return ["ini"];
-  }
+  const SUPPORTED_FILE_TYPES = ["ini"];
 
   /**
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may
@@ -35,12 +28,12 @@ class IniConfigurationLoader extends ConfigurationLoader {
    *
    * This function may cache the parsing result for better performance
    *
-   * @param string $filename absolute path to a configuration file
    * @return array an associative array containing the configuration as key -> value pairs.
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public static function parseFile($filename) {
+  public function parseFile() {
+    $filename = $this->getFilename();
     $parsedIniContents = parse_ini_file($filename, true);
 
     if (!$parsedIniContents) {

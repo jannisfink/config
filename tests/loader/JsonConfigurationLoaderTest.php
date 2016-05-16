@@ -26,37 +26,47 @@ class JsonConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   const INVALID_JSON_NO_EXTENSION = __DIR__ . "/invalid_json";
 
   public function testGetSupportedFileTypes() {
-    $this->assertEquals(["json"], JsonConfigurationLoader::getSupportedFileTypes());
+    $this->assertEquals(["json"], JsonConfigurationLoader::SUPPORTED_FILE_TYPES);
   }
 
   public function testParseFileValidJson() {
-    $withExtension = JsonConfigurationLoader::parseFile(self::VALID_JSON_WITH_EXTENSION);
-    $withoutExtension = JsonConfigurationLoader::parseFile(self::VALID_JSON_NO_EXTENSION);
+    $withExtension = new JsonConfigurationLoader(self::VALID_JSON_WITH_EXTENSION);
+    $withoutExtension = new JsonConfigurationLoader(self::VALID_JSON_NO_EXTENSION);
 
-    $this->assertEquals(["key" => "value"], $withExtension);
-    $this->assertEquals(["key" => "value"], $withoutExtension);
+    $this->assertEquals(["key" => "value"], $withExtension->parseFile());
+    $this->assertEquals(["key" => "value"], $withoutExtension->parseFile());
   }
 
   public function testParseFileInvalidJsonWithException() {
     $this->setExpectedException(ParseException::class);
 
-    JsonConfigurationLoader::parseFile(self::INVALID_JSON_WITH_EXTENSION);
+    $loader = new JsonConfigurationLoader(self::INVALID_JSON_WITH_EXTENSION);
+    $loader->parseFile();
   }
 
   public function testParseFileInvalidJsonWithoutException() {
     $this->setExpectedException(ParseException::class);
 
-    JsonConfigurationLoader::parseFile(self::INVALID_JSON_NO_EXTENSION);
+    $loader = new JsonConfigurationLoader(self::INVALID_JSON_NO_EXTENSION);
+    $loader->parseFile();
   }
 
   public function testCheckFileWithExtension() {
-    $this->assertTrue(JsonConfigurationLoader::checkFile(self::VALID_JSON_WITH_EXTENSION));
-    $this->assertTrue(JsonConfigurationLoader::checkFile(self::INVALID_JSON_WITH_EXTENSION));
+    $valid = new JsonConfigurationLoader(self::VALID_JSON_WITH_EXTENSION);
+    $invalid = new JsonConfigurationLoader(self::INVALID_JSON_WITH_EXTENSION);
+
+    $this->assertTrue($valid->checkFile());
+    $this->assertTrue($invalid->checkFile());
   }
 
   public function testCheckFileWithoutExtension() {
-    $this->assertTrue(JsonConfigurationLoader::checkFile(self::VALID_JSON_NO_EXTENSION));
-    $this->assertFalse(JsonConfigurationLoader::checkFile(self::INVALID_JSON_NO_EXTENSION));
+    $valid = new JsonConfigurationLoader(self::VALID_JSON_NO_EXTENSION);
+    $invalid = new JsonConfigurationLoader(self::INVALID_JSON_NO_EXTENSION);
+
+    $this->assertFalse($valid->checkFile());
+    $this->assertFalse($invalid->checkFile());
+
+    $this->assertTrue($valid->checkFile(true));
   }
 
 }
