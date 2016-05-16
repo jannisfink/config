@@ -26,6 +26,19 @@ interface ConfigurationLoader {
   public function getFilename();
 
   /**
+   * Checks, if a given file can be parsed by this configuration loader. If the file type is supported
+   * by this loader, this function will return true without further checking for correct syntax of the
+   * configuration file.
+   *
+   * If the deep parameter is set to true, this function will try to parse the file formats to test
+   * whether they can be parsed or not.
+   *
+   * @param $deep bool if set to true, this function will just look for the file extension
+   * @return bool true, if the given file can be parsed by this loader, false else
+   */
+  public function checkFile($deep = false);
+
+  /**
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may
    * contain another associative array, if the configuration syntax supports this.
    *

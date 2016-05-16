@@ -16,6 +16,7 @@
 namespace Fink\config;
 
 use Fink\config\loader\AutoConfigurationLoader;
+use Fink\config\loader\BaseConfigurationLoader;
 use Fink\config\loader\IniConfigurationLoader;
 use Fink\config\loader\JsonConfigurationLoader;
 
@@ -28,6 +29,12 @@ use Fink\config\loader\JsonConfigurationLoader;
  * @package Fink\config
  */
 class Configuration {
+
+  private static $configurationLoaders = [
+    Configuration::AUTO => AutoConfigurationLoader::class,
+    Configuration::INI => IniConfigurationLoader::class,
+    Configuration::JSON => JsonConfigurationLoader::class
+  ];
 
   /**
    * Constant to indicate an intelligent guess between all possible configuration formats
@@ -107,6 +114,29 @@ class Configuration {
 
     $this->configuration = $loader->parseFile();
     $this->configurationLoaded = true;
+  }
+
+  /**
+   * @return array an array containing all active configuration loader with their id
+   */
+  public static function getConfigurationLoaders() {
+    return self::$configurationLoaders;
+  }
+
+  /**
+   * Add a new configuration loader to the list of supported configuration loaders
+   *
+   * @param int $id id of the new loader. Must be unique
+   * @param BaseConfigurationLoader $loader
+   *
+   * @throws \Exception if there is a configuration loader present for the given id
+   */
+  public static function addConfigurationLoaders($id, BaseConfigurationLoader $loader) {
+    if (array_key_exists($id, self::$configurationLoaders)) {
+      throw new \Exception("there is already a configuration loader for id $id");
+    }
+
+    self::$configurationLoaders[$id] = $loader;
   }
 
 }

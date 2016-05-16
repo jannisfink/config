@@ -29,11 +29,6 @@ use Fink\config\exc\ParseException;
  */
 class AutoConfigurationLoader implements ConfigurationLoader {
 
-  private static $configurationLoaders = [
-    Configuration::INI => IniConfigurationLoader::class,
-    Configuration::JSON => JsonConfigurationLoader::class
-  ];
-
   private $filename;
 
   /**
@@ -55,6 +50,24 @@ class AutoConfigurationLoader implements ConfigurationLoader {
   }
 
   /**
+   * Checks, if a given file can be parsed by this configuration loader. If the file type is supported
+   * by this loader, this function will return true without further checking for correct syntax of the
+   * configuration file.
+   *
+   * If the deep parameter is set to true, this function will try to parse the file formats to test
+   * whether they can be parsed or not.
+   *
+   * @param $deep bool if set to true, this function will just look for the file extension
+   * @return bool true, if the given file can be parsed by this loader, false else
+   */
+  public function checkFile($deep = false) {
+    // theoretically, this class is capable of parsing every (most) given file. Nevertheless,
+    // return always false to prevent an endless loop, while the auto configuration loader
+    // selects himself for parsing a given configuration file
+    return false;
+  }
+
+  /**
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may
    * contain another associative array, if the configuration syntax supports this.
    *
@@ -66,7 +79,7 @@ class AutoConfigurationLoader implements ConfigurationLoader {
    */
   public function parseFile() {
     foreach ([false, true] as $deep) { // first try with flat match to avoid parsing the same file over and over again
-      foreach (self::getConfigurationLoaders() as $loaderClass) {
+      foreach (Configuration::getConfigurationLoaders() as $loaderClass) {
         $loader = new $loaderClass($this->getFilename()); // TODO cache instances
 
         if ($loader->checkFile($deep)) {
@@ -78,10 +91,4 @@ class AutoConfigurationLoader implements ConfigurationLoader {
     throw new ParseException("$this->filename cannot be parsed by any configured configuration loaders");
   }
 
-  /**
-   * @return array all configuration loaders configured
-   */
-  public static function getConfigurationLoaders() {
-    return self::$configurationLoaders;
-  }
 }
