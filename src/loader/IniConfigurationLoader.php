@@ -34,7 +34,7 @@ class IniConfigurationLoader extends BaseConfigurationLoader {
    */
   public function parseFile() {
     $filename = $this->getFilename();
-    $parsedIniContents = parse_ini_file($filename, true);
+    $parsedIniContents = @parse_ini_file($filename, true); // skip syntax error if no valid ini format
 
     if (!$parsedIniContents) {
       throw new ParseException("$filename is no valid ini file");
