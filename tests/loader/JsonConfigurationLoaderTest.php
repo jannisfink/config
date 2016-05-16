@@ -38,14 +38,14 @@ class JsonConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testParseFileInvalidJsonWithException() {
-    $this->setExpectedException(ParseException::class);
+    $this->expectException(ParseException::class);
 
     $loader = new JsonConfigurationLoader(self::INVALID_JSON_WITH_EXTENSION);
     $loader->parseFile();
   }
 
   public function testParseFileInvalidJsonWithoutException() {
-    $this->setExpectedException(ParseException::class);
+    $this->expectException(ParseException::class);
 
     $loader = new JsonConfigurationLoader(self::INVALID_JSON_NO_EXTENSION);
     $loader->parseFile();

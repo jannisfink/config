@@ -34,7 +34,7 @@ class IniConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testParseFileInvalidIni() {
-    $this->setExpectedException(ParseException::class);
+    $this->expectException(ParseException::class);
 
     $loader = new IniConfigurationLoader(self::INVALID_INI);
     $loader->parseFile();

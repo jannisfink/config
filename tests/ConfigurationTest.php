@@ -15,6 +15,9 @@
 
 namespace Fink\config;
 
+use Fink\config\exc\LoadException;
+use Fink\config\loader\IniConfigurationLoader;
+
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase {
 
@@ -47,11 +50,32 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testGetNonExistingKey() {
-    $this->setExpectedException(\Exception::class);
+    $this->expectException(\Exception::class);
 
     $config = new Configuration(self::VALID_JSON, Configuration::JSON);
 
     $config->get("nonexistent");
+  }
+
+  public function testLoadDataInvalidId() {
+    $this->expectException(LoadException::class);
+
+    new Configuration("", 1337);
+  }
+
+  public function testAddConfigurationLoaderExistingId() {
+    $this->expectException(\Exception::class);
+
+    Configuration::addConfigurationLoader(Configuration::INI, IniConfigurationLoader::class);
+  }
+
+  public function testAddConfigurationLoaderNewId() {
+    $newId = 100;
+    Configuration::addConfigurationLoader($newId, IniConfigurationLoader::class);
+
+    $config = new Configuration(self::VALID_INI, $newId);
+
+    $this->assertEquals(["section" => ["key" => "value"]], $config->get());
   }
 
 }

@@ -15,8 +15,10 @@
 
 namespace Fink\config;
 
+use Fink\config\exc\LoadException;
 use Fink\config\loader\AutoConfigurationLoader;
 use Fink\config\loader\BaseConfigurationLoader;
+use Fink\config\loader\ConfigurationLoader;
 use Fink\config\loader\IniConfigurationLoader;
 use Fink\config\loader\JsonConfigurationLoader;
 
@@ -55,6 +57,8 @@ class Configuration {
 
   private $format;
 
+  private $configurationLoader;
+
   private $configurationLoaded;
 
   private $configuration;
@@ -64,11 +68,14 @@ class Configuration {
    *
    * @param string $filename the filename of the configuration file as an absolute path.
    * @param int $format format of the configuration file. Intelligent guess, if not given.
+   *
+   * @throws LoadException if no matching configuration loader could be found
    */
   public function __construct($filename, $format = Configuration::AUTO) {
     $this->filename = $filename;
     $this->format = $format;
     $this->configurationLoaded = false;
+    $this->configurationLoader = $this->getConfigurationLoader();
   }
 
   /**
@@ -88,31 +95,31 @@ class Configuration {
     $configuration = $this->configuration;
     foreach ($path as $key) {
       if (!array_key_exists($key, $configuration)) {
-        throw new \Exception($key . ' is not present in the configuration');
+        throw new \Exception("$key is not present in the configuration");
       }
       $configuration = $configuration[$key];
     }
     return $configuration;
   }
 
-  private function loadConfiguration() {
-    $loader = null;
-    switch ($this->format) {
-      case self::INI:
-        $loader = new IniConfigurationLoader($this->filename);
-        break;
-
-      case self::JSON:
-        $loader = new JsonConfigurationLoader($this->filename);
-        break;
-
-      case self::AUTO:
-      default:
-        $loader = new AutoConfigurationLoader($this->filename);
-        break;
+  /**
+   * @return ConfigurationLoader the loader to load the configuration file given
+   *
+   * @throws LoadException if no matching configuration loader could be found
+   */
+  private function getConfigurationLoader() {
+    if (!array_key_exists($this->format, self::getConfigurationLoaders())) {
+      throw new LoadException("configuration loader for format key $this->format could not be found");
     }
 
-    $this->configuration = $loader->parseFile();
+    $loaderClass = self::getConfigurationLoaders()[$this->format];
+    $loader = new $loaderClass($this->filename);
+
+    return $loader;
+  }
+
+  private function loadConfiguration() {
+    $this->configuration = $this->configurationLoader->parseFile();
     $this->configurationLoaded = true;
   }
 
@@ -127,11 +134,11 @@ class Configuration {
    * Add a new configuration loader to the list of supported configuration loaders
    *
    * @param int $id id of the new loader. Must be unique
-   * @param BaseConfigurationLoader $loader
+   * @param string $loader class name of the loader to use for this id
    *
    * @throws \Exception if there is a configuration loader present for the given id
    */
-  public static function addConfigurationLoaders($id, BaseConfigurationLoader $loader) {
+  public static function addConfigurationLoader($id, $loader) {
     if (array_key_exists($id, self::$configurationLoaders)) {
       throw new \Exception("there is already a configuration loader for id $id");
     }

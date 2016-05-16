@@ -21,6 +21,15 @@ use Fink\config\exc\ParseException;
 interface ConfigurationLoader {
 
   /**
+   * ConfigurationLoader constructor.
+   *
+   * Create a new loader for a given file.
+   *
+   * @param $filename string the file name
+   */
+  public function __construct($filename);
+
+  /**
    * @return string the name of the configuration file to read
    */
   public function getFilename();

@@ -47,7 +47,7 @@ class AutoConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testParseInvalidJsonWithExtension() {
-    $this->setExpectedException(ParseException::class);
+    $this->expectException(ParseException::class);
 
     $loader = new AutoConfigurationLoader(self::INVALID_JSON_WITH_EXTENSION);
 
