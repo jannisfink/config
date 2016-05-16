@@ -20,7 +20,7 @@ use Fink\config\exc\ParseException;
 
 class JsonConfigurationLoader extends ConfigurationLoader {
 
-  const SUPPORTED_FILE_TYPES = ["json"];
+  public static $supportedFileTypes = ["json"];
 
   /**
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may

@@ -24,7 +24,7 @@ class IniConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   const INVALID_INI = __DIR__ . "/invalid_ini.ini";
 
   public function testGetSupportedFileTypes() {
-    $this->assertEquals(["ini"], IniConfigurationLoader::SUPPORTED_FILE_TYPES);
+    $this->assertEquals(["ini"], IniConfigurationLoader::$supportedFileTypes);
   }
 
   public function testParseFileValidIni() {

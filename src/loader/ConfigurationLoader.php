@@ -32,7 +32,7 @@ abstract class ConfigurationLoader {
   /**
    * An array of all supported file types
    */
-  const SUPPORTED_FILE_TYPES = [];
+  public static $supportedFileTypes = [];
 
   /**
    * ConfigurationLoader constructor.
@@ -62,7 +62,7 @@ abstract class ConfigurationLoader {
    */
   public final function checkFile($deep = false) {
     $fileExtension = pathinfo($this->filename, PATHINFO_EXTENSION);
-    if (in_array($fileExtension, static::SUPPORTED_FILE_TYPES)) {
+    if (in_array($fileExtension, static::$supportedFileTypes)) {
       return true;
     }
 

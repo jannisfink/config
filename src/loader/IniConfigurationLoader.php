@@ -20,7 +20,7 @@ use Fink\config\exc\ParseException;
 
 class IniConfigurationLoader extends ConfigurationLoader {
 
-  const SUPPORTED_FILE_TYPES = ["ini"];
+  public static $supportedFileTypes = ["ini"];
 
   /**
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may

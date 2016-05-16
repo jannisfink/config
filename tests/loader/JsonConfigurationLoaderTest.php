@@ -26,7 +26,7 @@ class JsonConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   const INVALID_JSON_NO_EXTENSION = __DIR__ . "/invalid_json";
 
   public function testGetSupportedFileTypes() {
-    $this->assertEquals(["json"], JsonConfigurationLoader::SUPPORTED_FILE_TYPES);
+    $this->assertEquals(["json"], JsonConfigurationLoader::$supportedFileTypes);
   }
 
   public function testParseFileValidJson() {
