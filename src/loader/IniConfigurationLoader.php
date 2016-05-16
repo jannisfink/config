@@ -18,7 +18,7 @@ namespace Fink\config\loader;
 
 use Fink\config\exc\ParseException;
 
-class JsonConfigurationLoader extends ConfigurationLoader {
+class IniConfigurationLoader extends ConfigurationLoader {
 
   /**
    * Returns an array of supported configuration formats, e.g. ['yaml', 'yml']
@@ -26,7 +26,7 @@ class JsonConfigurationLoader extends ConfigurationLoader {
    * @return array supported file formats
    */
   public static function getSupportedFileTypes() {
-    return ["json"];
+    return ["ini"];
   }
 
   /**
@@ -41,14 +41,12 @@ class JsonConfigurationLoader extends ConfigurationLoader {
    * @throws ParseException if the file cannot be parsed by this loader
    */
   public static function parseFile($filename) {
-    $fileContents = file_get_contents($filename);
-    $parsingResult = json_decode($fileContents, true);
+    $parsedIniContents = parse_ini_file($filename, true);
 
-    if ($parsingResult == null) {
-      throw new ParseException("$filename is no valid json file");
+    if (!$parsedIniContents) {
+      throw new ParseException("$filename is no valid ini file");
     }
 
-    // TODO: cache?
-    return $parsingResult;
+    return $parsedIniContents;
   }
 }

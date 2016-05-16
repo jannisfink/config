@@ -25,14 +25,23 @@ use Fink\config\exc\ParseException;
  *
  * @package Fink\config\loader
  */
-interface ConfigurationLoader {
+abstract class ConfigurationLoader {
+
+  /**
+   * ConfigurationLoader constructor.
+   *
+   * Allow no instances of this class
+   */
+  private final function __construct() {
+    // empty on purpose
+  }
 
   /**
    * Returns an array of supported configuration formats, e.g. ['yaml', 'yml']
    *
    * @return array supported file formats
    */
-  public static function getSupportedFileTypes();
+  public abstract static function getSupportedFileTypes();
 
   /**
    * Checks, if a given file can be parsed by this configuration loader. If the file type is supported
@@ -43,7 +52,19 @@ interface ConfigurationLoader {
    * @param string $filename absolute path to a configuration file
    * @return bool true, if the given file can be parsed by this loader, false else
    */
-  public static function checkFile($filename);
+  public final static function checkFile($filename) {
+    $fileExtension = pathinfo($filename, PATHINFO_EXTENSION);
+    if (in_array($fileExtension, static::getSupportedFileTypes())) {
+      return true;
+    }
+
+    try {
+      static::parseFile($filename);
+      return true;
+    } catch (ParseException $e) {
+      return false;
+    }
+  }
 
   /**
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may
@@ -56,6 +77,6 @@ interface ConfigurationLoader {
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public static function parseFile($filename);
+  public abstract static function parseFile($filename);
 
 }
