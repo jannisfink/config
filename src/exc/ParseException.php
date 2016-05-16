@@ -13,4 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once  __DIR__ . "/vendor/autoload.php";
+namespace Fink\config\exc;
+
+
+class ParseException extends \Exception {
+
+}

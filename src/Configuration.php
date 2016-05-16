@@ -19,7 +19,7 @@ namespace Fink\config;
 /**
  * Class Configuration
  *
- * Read a configuration from a file.
+ * Read a configuration from file.
  *
  * @package Fink\config
  */
