@@ -78,4 +78,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals(["section" => ["key" => "value"]], $config->get());
   }
 
+  public function testAddConfigurationLoaderNotImplementingInterface() {
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessage("given loader must implement the ConfigurationLoader interface");
+    Configuration::addConfigurationLoader(50000, Configuration::class);
+  }
+
 }

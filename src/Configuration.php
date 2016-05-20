@@ -136,11 +136,17 @@ class Configuration {
    * @param int $id id of the new loader. Must be unique
    * @param string $loader class name of the loader to use for this id
    *
-   * @throws \Exception if there is a configuration loader present for the given id
+   * @throws \Exception if there is a configuration loader present for the given id or the given class name is no
+   * configuration loader
    */
   public static function addConfigurationLoader($id, $loader) {
     if (array_key_exists($id, self::$configurationLoaders)) {
       throw new \Exception("there is already a configuration loader for id $id");
+    }
+
+    $reflection = new \ReflectionClass($loader);
+    if (!$reflection->implementsInterface(ConfigurationLoader::class)) {
+      throw new \Exception("given loader must implement the ConfigurationLoader interface");
     }
 
     self::$configurationLoaders[$id] = $loader;
