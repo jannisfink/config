@@ -32,8 +32,8 @@ class JsonConfigurationLoader extends FileConfigurationLoader {
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public function parseFile() {
-    $filename = $this->getFilename();
+  public function parseConfiguration() {
+    $filename = $this->getAccessor();
     $fileContents = file_get_contents($filename);
     $parsingResult = json_decode($fileContents, true);
 

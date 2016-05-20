@@ -30,14 +30,14 @@ class IniConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   public function testParseFileValidIni() {
     $loader = new IniConfigurationLoader(self::VALID_INI);
 
-    $this->assertEquals(["section" => ["key" => "value"]], $loader->parseFile());
+    $this->assertEquals(["section" => ["key" => "value"]], $loader->parseConfiguration());
   }
 
   public function testParseFileInvalidIni() {
     $this->expectException(ParseException::class);
 
     $loader = new IniConfigurationLoader(self::INVALID_INI);
-    $loader->parseFile();
+    $loader->parseConfiguration();
   }
 
 }

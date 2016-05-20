@@ -118,7 +118,7 @@ class Configuration {
   }
 
   private function loadConfiguration() {
-    $this->configuration = $this->configurationLoader->parseFile();
+    $this->configuration = $this->configurationLoader->parseConfiguration();
     $this->configurationLoaded = true;
   }
 

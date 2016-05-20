@@ -32,8 +32,8 @@ class IniConfigurationLoader extends FileConfigurationLoader {
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public function parseFile() {
-    $filename = $this->getFilename();
+  public function parseConfiguration() {
+    $filename = $this->getAccessor();
     $parsedIniContents = @parse_ini_file($filename, true); // skip syntax error if no valid ini format
 
     if (!$parsedIniContents) {

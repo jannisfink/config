@@ -25,14 +25,14 @@ interface ConfigurationLoader {
    *
    * Create a new loader for a given file.
    *
-   * @param $filename string the file name
+   * @param $accessor string accessor to the configuration. May be a file name
    */
-  public function __construct($filename);
+  public function __construct($accessor);
 
   /**
-   * @return string the name of the configuration file to read
+   * @return string the string to access the configuration
    */
-  public function getFilename();
+  public function getAccessor();
 
   /**
    * Checks, if a given file can be parsed by this configuration loader. If the file type is supported
@@ -45,7 +45,7 @@ interface ConfigurationLoader {
    * @param $deep bool if set to true, this function will just look for the file extension
    * @return bool true, if the given file can be parsed by this loader, false else
    */
-  public function checkFile($deep = false);
+  public function checkConfiguration($deep = false);
 
   /**
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may
@@ -57,6 +57,6 @@ interface ConfigurationLoader {
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public function parseFile();
+  public function parseConfiguration();
 
 }

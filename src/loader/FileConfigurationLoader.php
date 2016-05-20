@@ -39,16 +39,16 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
    *
    * Create a new loader for a given file.
    *
-   * @param $filename string the file name
+   * @param $accessor string the file name
    */
-  public final function __construct($filename) {
-    $this->filename = $filename;
+  public final function __construct($accessor) {
+    $this->filename = $accessor;
   }
 
   /**
    * @return string the name of the configuration file to read
    */
-  public function getFilename() {
+  public function getAccessor() {
     return $this->filename;
   }
 
@@ -63,7 +63,7 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
    * @param $deep bool if set to true, this function will just look for the file extension
    * @return bool true, if the given file can be parsed by this loader, false else
    */
-  public final function checkFile($deep = false) {
+  public final function checkConfiguration($deep = false) {
     $fileExtension = pathinfo($this->filename, PATHINFO_EXTENSION);
     if (in_array($fileExtension, static::$supportedFileTypes)) {
       return true;
@@ -74,7 +74,7 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
     }
 
     try {
-      $this->parseFile();
+      $this->parseConfiguration();
       return true;
     } catch (ParseException $e) {
       return false;
@@ -91,6 +91,6 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public abstract function parseFile();
+  public abstract function parseConfiguration();
 
 }

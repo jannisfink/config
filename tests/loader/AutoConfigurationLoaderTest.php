@@ -31,19 +31,19 @@ class AutoConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   public function testParseValidJsonWithExtension() {
     $loader = new AutoConfigurationLoader(self::VALID_JSON_WITH_EXTENSION);
 
-    $this->assertEquals(["key" => "value"], $loader->parseFile());
+    $this->assertEquals(["key" => "value"], $loader->parseConfiguration());
   }
 
   public function testParseValidIniWithExtension() {
     $loader = new AutoConfigurationLoader(self::VALID_INI);
 
-    $this->assertEquals(["section" => ["key" => "value"]], $loader->parseFile());
+    $this->assertEquals(["section" => ["key" => "value"]], $loader->parseConfiguration());
   }
 
   public function testParseValidJsonWithoutExtension() {
     $loader = new AutoConfigurationLoader(self::VALID_JSON_NO_EXTENSION);
 
-    $this->assertEquals(["key" => "value"], $loader->parseFile());
+    $this->assertEquals(["key" => "value"], $loader->parseConfiguration());
   }
 
   public function testParseInvalidJsonWithExtension() {
@@ -51,7 +51,7 @@ class AutoConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
 
     $loader = new AutoConfigurationLoader(self::INVALID_JSON_WITH_EXTENSION);
 
-    $loader->parseFile();
+    $loader->parseConfiguration();
   }
 
   public function testParseInvalidJsonWithoutExtension() {
@@ -59,7 +59,7 @@ class AutoConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
 
     $loader = new AutoConfigurationLoader(self::INVALID_JSON_NO_EXTENSION);
 
-    $loader->parseFile();
+    $loader->parseConfiguration();
   }
 
   public function testParseInvalidIniWithExtension() {
@@ -67,7 +67,7 @@ class AutoConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
 
     $loader = new AutoConfigurationLoader(self::INVALID_INI);
 
-    $loader->parseFile();
+    $loader->parseConfiguration();
   }
 
 }

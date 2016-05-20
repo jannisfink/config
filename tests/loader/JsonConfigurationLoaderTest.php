@@ -33,40 +33,40 @@ class JsonConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
     $withExtension = new JsonConfigurationLoader(self::VALID_JSON_WITH_EXTENSION);
     $withoutExtension = new JsonConfigurationLoader(self::VALID_JSON_NO_EXTENSION);
 
-    $this->assertEquals(["key" => "value"], $withExtension->parseFile());
-    $this->assertEquals(["key" => "value"], $withoutExtension->parseFile());
+    $this->assertEquals(["key" => "value"], $withExtension->parseConfiguration());
+    $this->assertEquals(["key" => "value"], $withoutExtension->parseConfiguration());
   }
 
   public function testParseFileInvalidJsonWithException() {
     $this->expectException(ParseException::class);
 
     $loader = new JsonConfigurationLoader(self::INVALID_JSON_WITH_EXTENSION);
-    $loader->parseFile();
+    $loader->parseConfiguration();
   }
 
   public function testParseFileInvalidJsonWithoutException() {
     $this->expectException(ParseException::class);
 
     $loader = new JsonConfigurationLoader(self::INVALID_JSON_NO_EXTENSION);
-    $loader->parseFile();
+    $loader->parseConfiguration();
   }
 
   public function testCheckFileWithExtension() {
     $valid = new JsonConfigurationLoader(self::VALID_JSON_WITH_EXTENSION);
     $invalid = new JsonConfigurationLoader(self::INVALID_JSON_WITH_EXTENSION);
 
-    $this->assertTrue($valid->checkFile());
-    $this->assertTrue($invalid->checkFile());
+    $this->assertTrue($valid->checkConfiguration());
+    $this->assertTrue($invalid->checkConfiguration());
   }
 
   public function testCheckFileWithoutExtension() {
     $valid = new JsonConfigurationLoader(self::VALID_JSON_NO_EXTENSION);
     $invalid = new JsonConfigurationLoader(self::INVALID_JSON_NO_EXTENSION);
 
-    $this->assertFalse($valid->checkFile());
-    $this->assertFalse($invalid->checkFile());
+    $this->assertFalse($valid->checkConfiguration());
+    $this->assertFalse($invalid->checkConfiguration());
 
-    $this->assertTrue($valid->checkFile(true));
+    $this->assertTrue($valid->checkConfiguration(true));
   }
 
 }
