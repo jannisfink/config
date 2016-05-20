@@ -18,7 +18,7 @@ namespace Fink\config\loader;
 
 use Fink\config\exc\ParseException;
 
-class JsonConfigurationLoader extends BaseConfigurationLoader {
+class JsonConfigurationLoader extends FileConfigurationLoader {
 
   public static $supportedFileTypes = ["json"];
 

@@ -17,7 +17,6 @@ namespace Fink\config;
 
 use Fink\config\exc\LoadException;
 use Fink\config\loader\AutoConfigurationLoader;
-use Fink\config\loader\BaseConfigurationLoader;
 use Fink\config\loader\ConfigurationLoader;
 use Fink\config\loader\IniConfigurationLoader;
 use Fink\config\loader\JsonConfigurationLoader;

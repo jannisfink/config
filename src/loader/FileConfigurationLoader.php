@@ -25,7 +25,7 @@ use Fink\config\exc\ParseException;
  *
  * @package Fink\config\loader
  */
-abstract class BaseConfigurationLoader implements ConfigurationLoader {
+abstract class FileConfigurationLoader implements ConfigurationLoader {
 
   private $filename;
 
