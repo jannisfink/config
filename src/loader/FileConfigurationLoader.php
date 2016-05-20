@@ -64,6 +64,10 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
    * @return bool true, if the given file can be parsed by this loader, false else
    */
   public final function checkConfiguration($deep = false) {
+    if (!file_exists($this->filename) || !is_readable($this->filename)) {
+      return false;
+    }
+
     $fileExtension = pathinfo($this->filename, PATHINFO_EXTENSION);
     if (in_array($fileExtension, static::$supportedFileTypes)) {
       return true;
