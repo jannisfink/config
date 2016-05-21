@@ -67,8 +67,8 @@ echo $iniConfig->get("section", "key");  // echoes "value", too
 
 ### Use custom configuration loaders
 
-To create a new (custom) configuration loader, just create a new subclass of `\Fink\config\loader\BaseConfigurationLoader` and implement the methods needed. Be sure to override the static class member `$supportedFileTypes` as a hint for supported configuration file types.
 
+To create a new (custom) configuration loader, just create a new subclass of `\Fink\config\loader\FileConfigurationLoader` and implement the methods needed. Be sure to override the static class member `$supportedFileTypes` as a hint for supported configuration file types.
 Add the new configuration loader to the list of supported loaders:
 
 ```php
