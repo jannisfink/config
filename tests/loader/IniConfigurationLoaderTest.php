@@ -20,8 +20,8 @@ use Fink\config\exc\ParseException;
 
 class IniConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
 
-  const VALID_INI = __DIR__ . "/valid_ini.ini";
-  const INVALID_INI = __DIR__ . "/invalid_ini.ini";
+  const VALID_INI = __DIR__ . "/resources/valid_ini.ini";
+  const INVALID_INI = __DIR__ . "/resources/invalid_ini.ini";
 
   public function testGetSupportedFileTypes() {
     $this->assertEquals(["ini"], IniConfigurationLoader::$supportedFileTypes);

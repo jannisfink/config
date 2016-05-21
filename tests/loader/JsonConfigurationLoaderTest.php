@@ -20,10 +20,10 @@ use Fink\config\exc\ParseException;
 
 class JsonConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
 
-  const VALID_JSON_WITH_EXTENSION = __DIR__ . "/valid_json.json";
-  const VALID_JSON_NO_EXTENSION = __DIR__ . "/valid_json";
-  const INVALID_JSON_WITH_EXTENSION = __DIR__ . "/invalid_json.json";
-  const INVALID_JSON_NO_EXTENSION = __DIR__ . "/invalid_json";
+  const VALID_JSON_WITH_EXTENSION = __DIR__ . "/resources/valid_json.json";
+  const VALID_JSON_NO_EXTENSION = __DIR__ . "/resources/valid_json";
+  const INVALID_JSON_WITH_EXTENSION = __DIR__ . "/resources/invalid_json.json";
+  const INVALID_JSON_NO_EXTENSION = __DIR__ . "/resources/invalid_json";
 
   const NONEXISTING_FILE = __DIR__ . "/nonexisting";
 

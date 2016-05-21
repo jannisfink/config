@@ -21,8 +21,8 @@ use Fink\config\loader\IniConfigurationLoader;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase {
 
-  const VALID_JSON = __DIR__ . "/loader/valid_json.json";
-  const VALID_INI = __DIR__ . "/loader/valid_ini.ini";
+  const VALID_JSON = __DIR__ . "/loader/resources/valid_json.json";
+  const VALID_INI = __DIR__ . "/loader/resources/valid_ini.ini";
 
   public function testLoadValidJsonExplicit() {
     $config = new Configuration(self::VALID_JSON, Configuration::JSON);

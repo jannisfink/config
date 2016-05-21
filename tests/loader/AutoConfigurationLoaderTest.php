@@ -20,13 +20,13 @@ use Fink\config\exc\ParseException;
 
 class AutoConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
 
-  const VALID_JSON_WITH_EXTENSION = __DIR__ . "/valid_json.json";
-  const VALID_JSON_NO_EXTENSION = __DIR__ . "/valid_json";
-  const INVALID_JSON_WITH_EXTENSION = __DIR__ . "/invalid_json.json";
-  const INVALID_JSON_NO_EXTENSION = __DIR__ . "/invalid_json";
+  const VALID_JSON_WITH_EXTENSION = __DIR__ . "/resources/valid_json.json";
+  const VALID_JSON_NO_EXTENSION = __DIR__ . "/resources/valid_json";
+  const INVALID_JSON_WITH_EXTENSION = __DIR__ . "/resources/invalid_json.json";
+  const INVALID_JSON_NO_EXTENSION = __DIR__ . "/resources/invalid_json";
 
-  const VALID_INI = __DIR__ . "/valid_ini.ini";
-  const INVALID_INI = __DIR__ . "/invalid_ini.ini";
+  const VALID_INI = __DIR__ . "/resources/valid_ini.ini";
+  const INVALID_INI = __DIR__ . "/resources/invalid_ini.ini";
 
   public function testParseValidJsonWithExtension() {
     $loader = new AutoConfigurationLoader(self::VALID_JSON_WITH_EXTENSION);
