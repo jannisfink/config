@@ -17,6 +17,7 @@ namespace Fink\config\loader;
 
 
 use Fink\config\cache\ConfigurationCache;
+use Fink\config\exc\ConfigurationNotFoundException;
 use Fink\config\exc\ParseException;
 
 /**
@@ -63,10 +64,12 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
    *
    * @param $deep bool if set to true, this function will just look for the file extension
    * @return bool true, if the given file can be parsed by this loader, false else
+   *
+   * @throws ConfigurationNotFoundException if the given accessor accesses no valid configuration
    */
   public final function checkConfiguration($deep = false) {
     if (!file_exists($this->filename) || !is_readable($this->filename)) {
-      return false;
+      throw new ConfigurationNotFoundException("File $this->filename does not exist or is not readable");
     }
 
     $fileExtension = pathinfo($this->filename, PATHINFO_EXTENSION);

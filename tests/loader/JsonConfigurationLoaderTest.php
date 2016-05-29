@@ -17,6 +17,7 @@ namespace Fink\config\loader;
 
 
 use Fink\config\exc\ParseException;
+use Fink\config\exc\ConfigurationNotFoundException;
 
 class JsonConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
 
@@ -54,9 +55,11 @@ class JsonConfigurationLoaderTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testCheckFileNotExisting() {
+    $this->expectException(ConfigurationNotFoundException::class);
+
     $loader = new JsonConfigurationLoader(self::NONEXISTING_FILE);
 
-    $this->assertFalse($loader->checkConfiguration());
+    $loader->checkConfiguration();
   }
 
   public function testCheckFileWithExtension() {

@@ -16,6 +16,7 @@
 namespace Fink\config\loader;
 
 
+use exc\ConfigurationNotFoundException;
 use Fink\config\exc\ParseException;
 
 interface ConfigurationLoader {
@@ -44,6 +45,8 @@ interface ConfigurationLoader {
    *
    * @param $deep bool if set to true, this function will just look for the file extension
    * @return bool true, if the given file can be parsed by this loader, false else
+   *
+   * @throws ConfigurationNotFoundException if the given accessor accesses no valid configuration
    */
   public function checkConfiguration($deep = false);
 
