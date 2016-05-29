@@ -16,6 +16,7 @@
 namespace Fink\config\loader;
 
 
+use Fink\config\cache\ConfigurationCache;
 use Fink\config\exc\ParseException;
 
 /**
@@ -78,7 +79,7 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
     }
 
     try {
-      $this->parseConfiguration();
+      $this->parseAndCacheConfiguration();
       return true;
     } catch (ParseException $e) {
       return false;
@@ -86,15 +87,21 @@ abstract class FileConfigurationLoader implements ConfigurationLoader {
   }
 
   /**
-   * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may
-   * contain another associative array, if the configuration syntax supports this.
-   *
-   * This function may cache the parsing result for better performance
+   * This function works just like {@link ConfigurationLoader::parseConfiguration}, but caches the parsed
+   * configuration in addition.
    *
    * @return array an associative array containing the configuration as key -> value pairs.
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
-  public abstract function parseConfiguration();
+  public final function parseAndCacheConfiguration() {
+    if (ConfigurationCache::isCached(static::class, $this->filename)) {
+      return ConfigurationCache::getCached(static::class, $this->filename);
+    }
+
+    $result = $this->parseConfiguration();
+    ConfigurationCache::addToCache(static::class, $this->filename, $result);
+    return $result;
+  }
 
 }

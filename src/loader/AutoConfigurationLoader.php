@@ -16,6 +16,7 @@
 namespace Fink\config\loader;
 
 
+use Fink\config\cache\ConfigurationCache;
 use Fink\config\Configuration;
 use Fink\config\exc\ParseException;
 
@@ -83,7 +84,7 @@ class AutoConfigurationLoader implements ConfigurationLoader {
         $loader = new $loaderClass($this->getAccessor()); // TODO cache instances
 
         if ($loader->checkConfiguration($deep)) {
-          return $loader->parseConfiguration();
+          return $loader->parseAndCacheConfiguration();
         }
       }
     }
@@ -91,4 +92,21 @@ class AutoConfigurationLoader implements ConfigurationLoader {
     throw new ParseException("$this->accessor cannot be parsed by any configured configuration loaders");
   }
 
+  /**
+   * This function works just like {@link ConfigurationLoader::parseConfiguration}, but caches the parsed
+   * configuration in addition.
+   *
+   * @return array an associative array containing the configuration as key -> value pairs.
+   *
+   * @throws ParseException if the file cannot be parsed by this loader
+   */
+  public function parseAndCacheConfiguration() {
+    if (ConfigurationCache::isCached(static::class, $this->accessor)) {
+      return ConfigurationCache::getCached(static::class, $this->accessor);
+    }
+
+    $result = $this->parseConfiguration();
+    ConfigurationCache::addToCache(static::class, $this->accessor, $result);
+    return $result;
+  }
 }

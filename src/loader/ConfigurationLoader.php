@@ -51,12 +51,20 @@ interface ConfigurationLoader {
    * Parse a given configuration file. This function returns the configuration as key -> value pairs. The value may
    * contain another associative array, if the configuration syntax supports this.
    *
-   * This function may cache the parsing result for better performance
-   *
    * @return array an associative array containing the configuration as key -> value pairs.
    *
    * @throws ParseException if the file cannot be parsed by this loader
    */
   public function parseConfiguration();
+
+  /**
+   * This function works just like {@link ConfigurationLoader::parseConfiguration}, but caches the parsed
+   * configuration in addition.
+   *
+   * @return array an associative array containing the configuration as key -> value pairs.
+   *
+   * @throws ParseException if the file cannot be parsed by this loader
+   */
+  public function parseAndCacheConfiguration();
 
 }
