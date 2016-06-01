@@ -20,6 +20,7 @@ use Fink\config\loader\AutoConfigurationLoader;
 use Fink\config\loader\ConfigurationLoader;
 use Fink\config\loader\IniConfigurationLoader;
 use Fink\config\loader\JsonConfigurationLoader;
+use Fink\config\value\ConfigurationValue;
 
 
 /**
@@ -98,7 +99,9 @@ class Configuration {
       }
       $configuration = $configuration[$key];
     }
-    return $configuration;
+
+    $configurationValue = new ConfigurationValue($this, $configuration);
+    return $configurationValue->parse();
   }
 
   /**
