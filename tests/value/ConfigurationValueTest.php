@@ -21,7 +21,7 @@ use Fink\config\Configuration;
 class ConfigurationValueTest extends \PHPUnit_Framework_TestCase {
 
   public function testNested() {
-    $configuration = new Configuration(__DIR__ . "../resources/test_nested.ini");
+    $configuration = new Configuration(__DIR__ . "/../resources/test_nested.ini");
     $configurationValue = new ConfigurationValue($configuration, "\${section/key} and some additions");
 
     $this->assertEquals("a single key and some additions", $configurationValue->parse());

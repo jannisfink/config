@@ -20,6 +20,15 @@ use Fink\config\exc\ParseException;
 
 class ValueParser {
 
+  /**
+   * Gets a raw value land tries to parse it in several ways. When it found a function that can parse
+   * the given value, it will return immediately instead of trying to parse it with one of the possible
+   * functions left.
+   *
+   * @param $value mixed the raw value
+   * @return mixed the parsed value
+   * @throws ParseException if the given value can not be parsed by any pasing function of this class
+   */
   public function parseIntelligent($value) {
     $functions = [
       "parseNumeric",

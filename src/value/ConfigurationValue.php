@@ -26,7 +26,7 @@ use Fink\config\Configuration;
  */
 class ConfigurationValue {
 
-  const NESTED_CONFIGURATION_REGEX = "/\$\{(?<key>.*)\}/";
+  const NESTED_CONFIGURATION_REGEX = "/\\$\{(?<key>.*)\}/";
 
   const NESTED_CONFIGURATION_PATH_DIVIDER = "/";
 
@@ -76,7 +76,7 @@ class ConfigurationValue {
 
   private function parseNestedValue($value, $matches) {
     $keys = explode(self::NESTED_CONFIGURATION_PATH_DIVIDER, $matches["key"]);
-    $valueToReplace = $this->configuration->get($keys);
+    $valueToReplace = $this->configuration->get(...$keys);
 
     return preg_replace(self::NESTED_CONFIGURATION_REGEX, $valueToReplace, $value);
   }
