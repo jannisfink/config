@@ -23,7 +23,8 @@ class ValueParser {
   public function parseIntelligent($value) {
     $functions = [
       "parseNumeric",
-      "parseBoolean"
+      "parseBoolean",
+      "parseString"
     ];
 
     foreach ($functions as $function) {
@@ -34,7 +35,8 @@ class ValueParser {
       }
     }
 
-    throw new ParseException("'$value' could not be parsed by any parser");
+    $exportValue = var_export($value, true);
+    throw new ParseException("'$exportValue' could not be parsed by any parser");
   }
 
   /**
@@ -52,7 +54,8 @@ class ValueParser {
       return $value + 0;
     }
 
-    throw new ParseException("'$value' could not be parsed as a number");
+    $exportValue = var_export($value, true);
+    throw new ParseException("'$exportValue' could not be parsed as a number");
   }
 
   /**
@@ -85,6 +88,22 @@ class ValueParser {
       default:
         throw $e;
     }
+  }
+
+  /**
+   * Tests, if the given value is of type string
+   *
+   * @param mixed $value the value
+   * @return string the value as string
+   * @throws ParseException
+   */
+  public function parseString($value) {
+    if (is_string($value)) {
+      return $value;
+    }
+
+    $exportValue = var_export($value, true);
+    throw new ParseException("'$exportValue' can not be parsed as a string");
   }
 
 }

@@ -34,6 +34,8 @@ class ConfigurationValue {
 
   private $configuration;
 
+  private $parser;
+
   /**
    * ConfigurationValue constructor.
    *
@@ -43,6 +45,7 @@ class ConfigurationValue {
   public function __construct(Configuration $configuration, $value) {
     $this->configuration = $configuration;
     $this->value = $value;
+    $this->parser = new ValueParser();
   }
 
   /**
@@ -62,15 +65,13 @@ class ConfigurationValue {
     $matches = [];
     if (is_array($value)) {
       return $value;
-    } elseif (is_numeric($value)) {
-      return $this->getNumeric($value);
-    } elseif(is_bool($value)) {
-      return (bool) $value;
-    } elseif (preg_match(self::NESTED_CONFIGURATION_REGEX, $value, $matches) === 1) {
-      return $this->parseNestedValue($value, $matches);
     }
 
-    return $value;
+    if (preg_match(self::NESTED_CONFIGURATION_REGEX, $value, $matches) === 1) {
+      return $this->parseNestedValue($value, $matches);
+    } else {
+      return $this->parser->parseIntelligent($value);
+    }
   }
 
   private function parseNestedValue($value, $matches) {
@@ -78,21 +79,6 @@ class ConfigurationValue {
     $valueToReplace = $this->configuration->get($keys);
 
     return preg_replace(self::NESTED_CONFIGURATION_REGEX, $valueToReplace, $value);
-  }
-
-  /**
-   * Make this numeric element a number of the correct type.
-   *
-   * See @link http://php.net/manual/de/function.is-numeric.php#107326
-   *
-   * @param mixed $value the value
-   * @return int|float the parsed value, 0, if it is not parsable
-   */
-  private function getNumeric($value) {
-    if (is_numeric($value)) {
-      return $value + 0;
-    }
-    return 0;
   }
 
 }

@@ -59,4 +59,24 @@ class ValueParserTest extends \PHPUnit_Framework_TestCase {
     $this->assertFalse($this->valueParser->parseBoolean([]));
   }
 
+  public function testParseStringString() {
+    $this->assertEquals("test", $this->valueParser->parseString("test"));
+  }
+
+  public function testParseStringNumber() {
+    $this->expectException(ParseException::class);
+
+    $this->valueParser->parseString(2);
+  }
+
+  public function testParseIntelligentFloatFromString() {
+    $this->assertEquals(1.2, $this->valueParser->parseIntelligent("1.2"));
+  }
+
+  public function testParseIntelligentUnSupportedObject() {
+    $this->expectException(ParseException::class);
+
+    $this->valueParser->parseIntelligent([]);
+  }
+
 }
