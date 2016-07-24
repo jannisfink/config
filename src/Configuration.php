@@ -15,6 +15,7 @@
 
 namespace Fink\config;
 
+use Fink\config\cache\ConfigurationValueCache;
 use Fink\config\exc\LoadException;
 use Fink\config\loader\AutoConfigurationLoader;
 use Fink\config\loader\ConfigurationLoader;
@@ -63,6 +64,8 @@ class Configuration {
 
   private $configuration;
 
+  private $valueCache;
+
   /**
    * Create a new configuration instance.
    *
@@ -76,6 +79,7 @@ class Configuration {
     $this->format = $format;
     $this->configurationLoaded = false;
     $this->configurationLoader = $this->getConfigurationLoader();
+    $this->valueCache = new ConfigurationValueCache();
   }
 
   /**
@@ -88,6 +92,11 @@ class Configuration {
    * @throws \Exception if the configuration key asked for could not be found
    */
   public function get(...$path) {
+    $configurationKey = var_export($path, true);
+    if ($this->valueCache->isCached($configurationKey)) {
+      return $this->valueCache->get($configurationKey);
+    }
+
     if (!$this->configurationLoaded) {
       $this->loadConfiguration();
     }
@@ -101,7 +110,11 @@ class Configuration {
     }
 
     $configurationValue = new ConfigurationValue($this, $configuration);
-    return $configurationValue->parse();
+    $parsedConfigurationValue = $configurationValue->parse();
+
+    $this->valueCache->put($configurationKey, $parsedConfigurationValue);
+
+    return $parsedConfigurationValue;
   }
 
   /**
