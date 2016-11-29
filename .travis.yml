@@ -5,6 +5,10 @@ php:
   - hhvm
   - nightly
 
+addons:
+  code_climate:
+    repo_token: fcd91524ac1d84ded2ee8c787dde21e55144f23ae3e9af189b943f10e2ecf181
+
 matrix:
   allow_failures:
     - php: nightly
